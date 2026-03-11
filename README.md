@@ -1,4 +1,4 @@
-# AudioFlux-Intelligence 🎵🧠
+# AudioFlux-Intelligence
 
 AudioFlux-Intelligence is an end-to-end machine learning project for **music genre classification** using audio signal features. It extracts features from audio files, processes them (scaling, PCA), trains multiple ML models, and evaluates them with metrics and visualizations.
 
