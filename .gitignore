@@ -2,4 +2,9 @@
 venv/
 env/
 audioenv/
-data/
+data/raw/
+data/processed/
+models/
+__pycache__/
+*.pkl
+*.csv
