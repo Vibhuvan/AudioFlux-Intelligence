@@ -152,7 +152,6 @@ While others have very few:
 
 This causes models to prioritize large genres and ignore smaller ones.
 
----
 
 ### 2. Strong genre separation
 
@@ -166,7 +165,7 @@ Examples:
 
 These achieved relatively high F1 scores.
 
----
+
 
 ### 3. Confusion between related genres
 
@@ -208,29 +207,29 @@ These results highlight the impact of **dataset imbalance**.
 
 ```
 AudioFlux-Intelligence
-
+ |
 data
  ├─ raw
  │   ├─ features.csv
  │   └─ tracks.csv
  │
  └─ processed
-     ├─ final_dataset.csv
-     └─ model_dataset.csv
-
+ |   ├─ final_dataset.csv
+ |   └─ model_dataset.csv
+ |
 src
  ├─ datafiles
  │   ├─ build_dataset.py
  │   └─ preprocess_dataset.py
  │
  └─ models
-     ├─ train_logistic.py
-     ├─ train_randomforest.py
-     └─ train_gboost.py
-
+ |   ├─ train_logistic.py
+ |   ├─ train_randomforest.py
+ |   └─ train_gboost.py
+ |
 models
  └─ saved trained models
-
+ |
 README.md
 requirements.txt
 ```
@@ -265,12 +264,8 @@ python src/models/train_gboost.py
 
 Possible improvements include:
 
-* class imbalance handling (SMOTE / class weights)
-* hyperparameter tuning
-* deep learning models for audio spectrograms
-* confusion matrix visualization
-* feature importance analysis
-
+* Audio based deep learning models for audio spectrograms
+* ASR with LLM for the feature and lyrical analysis
 ---
 
 # Author
