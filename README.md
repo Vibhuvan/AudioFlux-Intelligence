@@ -1,119 +1,278 @@
-# AudioFlux-Intelligence
+# AudioFlux Intelligence
 
-AudioFlux-Intelligence is an end-to-end machine learning project for **music genre classification** using audio signal features. It extracts features from audio files, processes them (scaling, PCA), trains multiple ML models, and evaluates them with metrics and visualizations.
+AudioFlux Intelligence is a machine learning pipeline for **music genre classification and audio feature analysis** using the Free Music Archive (FMA) dataset.
 
----
+The project builds a complete ML workflow including:
 
-## Project Structure
+* dataset construction
+* preprocessing and feature engineering
+* dimensionality reduction
+* training multiple models
+* evaluation and error analysis
 
-
-AudioFlux-Intelligence/
-│
-├── data/
-│ ├── raw/ # Original datasets (FMA small / tracks.csv / features.csv)
-│ ├── processed/ # Cleaned and merged dataset (final_dataset.csv)
-│
-├── src/
-│ ├── datafiles/ # Scripts to preprocess and build final dataset
-│ │ └── build_dataset.py
-│ ├── models/ # Model training and evaluation scripts
-│ │ ├── train_model.py
-│ │ └── feature_importance.py
-│ └── utils/ # Helper functions for data loading, preprocessing
-│
-├── notebooks/ # Jupyter notebooks (optional)
-├── venv/ # Python virtual environment
-├── requirements.txt # Python dependencies
-├── README.md # This file
-└── .gitignore
-
+The system compares several models to understand how well **signal-processing-based audio features** can predict music genres.
 
 ---
 
-## Installation
+# Project Architecture
 
-1. **Clone the repository:**
-```bash
-git clone https://github.com/<yourusername>/AudioFlux-Intelligence.git
-cd AudioFlux-Intelligence
+```
+Raw FMA Dataset
+      │
+      ▼
+Feature Dataset (features.csv + tracks.csv)
+      │
+      ▼
+Dataset Builder
+(src/datafiles/build_dataset.py)
+      │
+      ▼
+Preprocessing Pipeline
+(src/datafiles/preprocess_dataset.py)
 
-Create virtual environment and install dependencies:
+• NaN handling  
+• Feature scaling (StandardScaler)  
+• Dimensionality reduction (PCA)
 
-python3 -m venv venv
-source venv/bin/activate    # On Windows use: venv\Scripts\activate
-pip install --upgrade pip
-pip install -r requirements.txt
-Usage
-1. Build Dataset
+      │
+      ▼
+Model Training
+(src/models)
+
+• Logistic Regression
+• Random Forest
+• Gradient Boosting
+
+      │
+      ▼
+Evaluation + Metrics
+```
+
+---
+
+# Dataset
+
+Dataset used: **Free Music Archive (FMA)**
+
+Sources:
+
+* features.csv → extracted audio signal features
+* tracks.csv → track metadata and genre labels
+
+Dataset statistics after processing:
+
+| Property     | Value               |
+| ------------ | ------------------- |
+| Total tracks | 49,598              |
+| Features     | ~518 audio features |
+| Genres       | 16                  |
+| Test samples | 9,920               |
+
+Audio features include:
+
+* MFCC coefficients
+* spectral centroid
+* spectral bandwidth
+* chroma features
+* spectral contrast
+* tonnetz harmonic features
+
+These features capture the **spectral and harmonic structure of music**.
+
+---
+
+# Preprocessing Pipeline
+
+The following preprocessing steps were applied:
+
+1. Merge audio features with genre labels
+2. Remove tracks with missing genre labels
+3. Handle missing values
+4. Standardize features using `StandardScaler`
+5. Apply **PCA dimensionality reduction**
+
+Final dataset:
+
+| Component        | Value   |
+| ---------------- | ------- |
+| PCA features     | 50      |
+| Training samples | ~39,600 |
+| Test samples     | 9,920   |
+
+PCA was used to reduce noise and improve model training efficiency.
+
+---
+
+# Models Trained
+
+Three models were trained and compared:
+
+1. Logistic Regression
+2. Random Forest
+3. Gradient Boosting
+
+Each model was trained using an **80/20 stratified train-test split**.
+
+Evaluation metrics:
+
+* Accuracy
+* Precision
+* Recall
+* F1-score
+
+---
+
+# Model Performance
+
+| Model               | Accuracy | Macro F1 | Weighted F1 |
+| ------------------- | -------- | -------- | ----------- |
+| Logistic Regression | 0.59     | 0.35     | 0.56        |
+| Random Forest       | **0.61** | 0.35     | **0.57**    |
+| Gradient Boosting   | 0.59     | 0.35     | 0.56        |
+
+Best performing model: **Random Forest**
+
+---
+
+# Key Observations
+
+### 1. Class imbalance
+
+Some genres have many samples:
+
+* Rock
+* Electronic
+* Experimental
+
+While others have very few:
+
+* Easy Listening
+* Blues
+* Soul-RnB
+
+This causes models to prioritize large genres and ignore smaller ones.
+
+---
+
+### 2. Strong genre separation
+
+Certain genres have distinctive acoustic signatures:
+
+Examples:
+
+* Classical
+* Old-Time / Historic
+* Rock
+
+These achieved relatively high F1 scores.
+
+---
+
+### 3. Confusion between related genres
+
+Genres with similar acoustic characteristics were often confused:
+
+Examples:
+
+* Pop vs Electronic
+* Blues vs Rock
+* Country vs Folk
+
+This reflects overlapping audio feature distributions.
+
+---
+
+# Example Classification Results
+
+High performing genres:
+
+| Genre               | F1 Score |
+| ------------------- | -------- |
+| Rock                | ~0.73    |
+| Classical           | ~0.67    |
+| Old-Time / Historic | ~0.82    |
+
+Low performing genres:
+
+| Genre          | F1 Score |
+| -------------- | -------- |
+| Blues          | 0.00     |
+| Easy Listening | 0.00     |
+| Soul-RnB       | ~0.03    |
+
+These results highlight the impact of **dataset imbalance**.
+
+---
+
+# Repository Structure
+
+```
+AudioFlux-Intelligence
+
+data
+ ├─ raw
+ │   ├─ features.csv
+ │   └─ tracks.csv
+ │
+ └─ processed
+     ├─ final_dataset.csv
+     └─ model_dataset.csv
+
+src
+ ├─ datafiles
+ │   ├─ build_dataset.py
+ │   └─ preprocess_dataset.py
+ │
+ └─ models
+     ├─ train_logistic.py
+     ├─ train_randomforest.py
+     └─ train_gboost.py
+
+models
+ └─ saved trained models
+
+README.md
+requirements.txt
+```
+
+---
+
+# Running the Project
+
+### 1. Build dataset
+
+```
 python src/datafiles/build_dataset.py
+```
 
-This will:
+### 2. Preprocess dataset
 
-Load audio features (features.csv) and metadata (tracks.csv)
+```
+python src/datafiles/preprocess_dataset.py
+```
 
-Merge them into a final dataset
+### 3. Train models
 
-Save final_dataset.csv in data/processed/
+```
+python src/models/train_logistic.py
+python src/models/train_randomforest.py
+python src/models/train_gboost.py
+```
 
-2. Train Models
-python src/models/train_model.py
+---
 
-Supports Logistic Regression, Random Forest, and Gradient Boosting.
-Trains models on PCA-reduced features and saves model checkpoints in src/models/.
+# Future Improvements
 
-3. Feature Importance
-python src/models/feature_importance.py
+Possible improvements include:
 
-Plots top PCA features contributing to classification.
-Saves feature_importance.png.
+* class imbalance handling (SMOTE / class weights)
+* hyperparameter tuning
+* deep learning models for audio spectrograms
+* confusion matrix visualization
+* feature importance analysis
 
-4. Evaluation
+---
 
-Classification report and accuracy metrics are printed after training.
+# Author
 
-Optionally, confusion matrices can be generated for error analysis.
-
-Data
-
-Dataset: Free Music Archive (FMA) Small subset
-
-Audio features: MFCCs, chroma, spectral contrast (~518 features)
-
-Samples: 49,598 audio tracks after preprocessing
-
-Split: Train/Val/Test (80/10/10%)
-
-Preprocessing: scaling, PCA (50 components), cleaning missing values
-
-Results
-Overall Metrics
-Model	Accuracy	Precision (macro)	Recall (macro)	F1-score (macro)
-Logistic Regression	0.59	0.44	0.33	0.36
-Random Forest	0.61	0.67	0.32	0.35
-Gradient Boosting	0.59	0.41	0.33	0.35
-Per-Genre F1-Scores
-Genre	Logistic Regression	Random Forest	Gradient Boosting
-Blues	0.00	0.00	0.00
-Classical	0.67	0.75	0.67
-Country	0.07	0.05	0.07
-Easy Listening	0.00	0.00	0.00
-Electronic	0.61	0.62	0.61
-Experimental	0.58	0.60	0.58
-Folk	0.49	0.53	0.49
-Hip-Hop	0.55	0.54	0.55
-Instrumental	0.22	0.17	0.22
-International	0.35	0.27	0.35
-Jazz	0.11	0.10	0.11
-Old-Time / Historic	0.82	0.87	0.82
-Pop	0.07	0.03	0.07
-Rock	0.72	0.73	0.72
-Soul-RnB	0.03	0.06	0.03
-Spoken	0.30	0.31	0.30
-
-Notes:
-
-Random Forest slightly outperforms Gradient Boosting in overall accuracy.
-
-Performance varies significantly across genres due to class imbalance.
-
-PCA helps reduce dimensionality and improve model generalization.
+Built as part of a machine learning exploration project on **audio signal processing and music classification**.
