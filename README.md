@@ -12,7 +12,7 @@ The project builds a complete ML workflow including:
 
 The system compares several models to understand how well **signal-processing-based audio features** can predict music genres.
 
----
+
 
 # Project Architecture
 
@@ -48,7 +48,7 @@ Model Training
 Evaluation + Metrics
 ```
 
----
+
 
 # Dataset
 
@@ -79,7 +79,7 @@ Audio features include:
 
 These features capture the **spectral and harmonic structure of music**.
 
----
+
 
 # Preprocessing Pipeline
 
@@ -101,7 +101,7 @@ Final dataset:
 
 PCA was used to reduce noise and improve model training efficiency.
 
----
+
 
 # Models Trained
 
@@ -120,7 +120,7 @@ Evaluation metrics:
 * Recall
 * F1-score
 
----
+
 
 # Model Performance
 
@@ -132,7 +132,6 @@ Evaluation metrics:
 
 Best performing model: **Random Forest**
 
----
 
 # Key Observations
 
@@ -179,7 +178,6 @@ Examples:
 
 This reflects overlapping audio feature distributions.
 
----
 
 # Example Classification Results
 
@@ -201,7 +199,7 @@ Low performing genres:
 
 These results highlight the impact of **dataset imbalance**.
 
----
+
 
 # Repository Structure
 
@@ -234,7 +232,7 @@ README.md
 requirements.txt
 ```
 
----
+
 
 # Running the Project
 
@@ -263,6 +261,7 @@ python src/models/train_gboost.py
 
 Possible improvements include:
 
+* Class imbalance handling (SMOTE / class weights)
 * Audio based deep learning models for audio spectrograms
 * ASR with LLM for the feature and lyrical analysis
 
