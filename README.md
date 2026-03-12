@@ -258,7 +258,6 @@ python src/models/train_randomforest.py
 python src/models/train_gboost.py
 ```
 
----
 
 # Future Improvements
 
@@ -266,8 +265,4 @@ Possible improvements include:
 
 * Audio based deep learning models for audio spectrograms
 * ASR with LLM for the feature and lyrical analysis
----
 
-# Author
-
-Built as part of a machine learning exploration project on **audio signal processing and music classification**.
